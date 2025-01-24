@@ -1,8 +1,9 @@
 import json
 import os
+
+import numpy as np
 from scipy.io import wavfile
 from scipy.signal import resample
-import numpy as np
 
 
 def read_json(file: str) -> dict:

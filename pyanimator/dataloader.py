@@ -1,6 +1,7 @@
-from dataclasses import dataclass
-from .util import read_json
 from copy import deepcopy
+from dataclasses import dataclass
+
+from .util import read_json
 
 
 @dataclass
@@ -31,9 +32,10 @@ class Emotions:
     happy: list[Pose]  # List os poses for the happy emotion.
     rhetorical: list[Pose]  # List of poses for the sad emotion.
 
-#sad: list[Pose]  # List of poses for the sad emotion.
-#angry: list[Pose]  # List of poses for the sad emotion.
-#confused: list[Pose]  # List of poses for the sad emotion.
+
+# sad: list[Pose]  # List of poses for the sad emotion.
+# angry: list[Pose]  # List of poses for the sad emotion.
+# confused: list[Pose]  # List of poses for the sad emotion.
 
 
 def get_assets() -> Emotions:

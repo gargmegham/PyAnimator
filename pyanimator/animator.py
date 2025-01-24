@@ -1,17 +1,23 @@
+import copy
+import logging
 import os
-import json
 import random
 
-from PIL import Image
-from datetime import datetime
-import numpy as np
 import cv2
-import copy
-from moviepy import ImageSequenceClip, CompositeVideoClip, CompositeAudioClip, AudioFileClip, VideoClip
+import numpy as np
+from moviepy import (
+    AudioFileClip,
+    CompositeAudioClip,
+    CompositeVideoClip,
+    ImageSequenceClip,
+    VideoClip,
+)
+from PIL import Image
 
-from .util import read_json
 from .dataloader import get_assets
-from .lipsync import viseme_sequencer, upsample
+from .lipsync import viseme_sequencer
+
+logger = logging.getLogger(__name__)
 
 
 class FrameSequence:
@@ -43,8 +49,8 @@ class animate:
         self.build_mouth_sequence()
 
         self.duration = len(self.sequence.mouth_files) / self.fps
-        print(f"Num Created: {len(self.sequence.mouth_files)}")
-        print(f"Duration: {self.duration}")
+        logger.info(f"Num Created: {len(self.sequence.mouth_files)}")
+        logger.info(f"Duration: {self.duration}")
 
         self.build_pose_sequence()
 
@@ -69,7 +75,9 @@ class animate:
             self.sequence.mouth_coords.append(pose.mouth_coordinates)
 
         # Prepend absolute path to all pose images
-        self.sequence.pose_files = [f"{os.path.dirname(__file__)}{file}" for file in self.sequence.pose_files]
+        self.sequence.pose_files = [
+            f"{os.path.dirname(__file__)}{file}" for file in self.sequence.pose_files
+        ]
 
         # Create mouth PIL image for every frame, with image transformations based on pose
         for i, _ in enumerate(self.sequence.mouth_files):
@@ -158,14 +166,17 @@ class animate:
             self.final_frames.append(final_frame)
 
     def export(self, path: str, background: VideoClip, scale: float = 0.7):
-        animation_clip = ImageSequenceClip(self.final_frames, fps=self.fps, with_mask=True)
+        animation_clip = ImageSequenceClip(
+            self.final_frames, fps=self.fps, with_mask=True
+        )
         new_height = int(background.size[1] * scale)
         new_width = int(animation_clip.w * (new_height / animation_clip.h))
         animation_clip = animation_clip.resized(width=new_width, height=new_height)
 
         # Overlay the animation on top of thee background clip
         final_clip = CompositeVideoClip(
-            clips=[background, animation_clip.with_position(("right", "bottom"))], use_bgclip=True
+            clips=[background, animation_clip.with_position(("right", "bottom"))],
+            use_bgclip=True,
         )
 
         # Add speech audio to clip with 0.2 second delay
@@ -175,7 +186,12 @@ class animate:
 
         # Export video to .mp4
         final_clip.write_videofile(
-            path, codec="libx264", audio_codec="aac", preset="ultrafast", threads=4, fps=self.fps
+            path,
+            codec="libx264",
+            audio_codec="aac",
+            preset="ultrafast",
+            threads=4,
+            fps=self.fps,
         )
 
 

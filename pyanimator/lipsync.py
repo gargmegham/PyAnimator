@@ -1,11 +1,14 @@
-from forcealign import ForceAlign
-from .util import read_json
+import logging
+import random
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Union
-import random
-import re
 
+from forcealign import ForceAlign
+
+from .util import read_json
+
+logger = logging.getLogger(__name__)
 # Viseme image for silence (i.e. closed mouth, not speaking)
 SILENT_VISEME = "9.png"
 SILENT_PHONEME = "PAUSE"
@@ -27,7 +30,9 @@ class WordViseme:
     breath: bool
 
 
-def viseme_sequencer(audio_file: str, transcript: str = None, fps: int = 48) -> list[WordViseme]:
+def viseme_sequencer(
+    audio_file: str, transcript: str = None, fps: int = 48
+) -> list[WordViseme]:
     """Converts and audio / txt file to force aligned viseme sequence
 
     Args:
@@ -46,12 +51,12 @@ def viseme_sequencer(audio_file: str, transcript: str = None, fps: int = 48) -> 
     words = aligner.inference()
 
     first_word = words[0]
-    print(f"Time Start: {first_word.time_start}")
+    logger.info(f"Time Start: {first_word.time_start}")
     last_word = words[-1]
     total_duration = last_word.time_end
     target_frames = int(total_duration * fps)
-    print(f"Target Duration: {total_duration + ENDING_SILENCE_SECONDS}")
-    print(f"Target Frames: {target_frames + int(ENDING_SILENCE_SECONDS *fps)}")
+    logger.info(f"Target Duration: {total_duration + ENDING_SILENCE_SECONDS}")
+    logger.info(f"Target Frames: {target_frames + int(ENDING_SILENCE_SECONDS *fps)}")
 
     viseme_sequence = []
     for word in words:
@@ -88,12 +93,16 @@ def viseme_sequencer(audio_file: str, transcript: str = None, fps: int = 48) -> 
         if i == len(viseme_sequence) - 1:
             break
 
-        silent_viseme = get_silent_viseme(viseme_sequence[i], viseme_sequence[i + 1], total_duration, target_frames)
+        silent_viseme = get_silent_viseme(
+            viseme_sequence[i], viseme_sequence[i + 1], total_duration, target_frames
+        )
         if silent_viseme:
             finished_sequence.append(silent_viseme)
 
     finshed_sequence = upsample(finished_sequence, length=target_frames)
-    silence = ending_silence(duration=ENDING_SILENCE_SECONDS, fps=fps, start_t=total_duration + 0.001)
+    silence = ending_silence(
+        duration=ENDING_SILENCE_SECONDS, fps=fps, start_t=total_duration + 0.001
+    )
     finished_sequence.append(silence)
     return finished_sequence
 
