@@ -1,4 +1,3 @@
-import logging
 import random
 from dataclasses import dataclass
 from datetime import datetime
@@ -8,7 +7,6 @@ from forcealign import ForceAlign
 
 from .util import read_json
 
-logger = logging.getLogger(__name__)
 # Viseme image for silence (i.e. closed mouth, not speaking)
 SILENT_VISEME = "9.png"
 SILENT_PHONEME = "PAUSE"
@@ -50,13 +48,9 @@ def viseme_sequencer(
     # Runs forced alignment algorithm and returns alignment results
     words = aligner.inference()
 
-    first_word = words[0]
-    logger.info(f"Time Start: {first_word.time_start}")
     last_word = words[-1]
     total_duration = last_word.time_end
     target_frames = int(total_duration * fps)
-    logger.info(f"Target Duration: {total_duration + ENDING_SILENCE_SECONDS}")
-    logger.info(f"Target Frames: {target_frames + int(ENDING_SILENCE_SECONDS *fps)}")
 
     viseme_sequence = []
     for word in words:

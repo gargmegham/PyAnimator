@@ -1,5 +1,4 @@
 import copy
-import logging
 import os
 import random
 
@@ -16,8 +15,6 @@ from PIL import Image
 
 from .dataloader import get_assets
 from .lipsync import viseme_sequencer
-
-logger = logging.getLogger(__name__)
 
 
 class FrameSequence:
@@ -49,8 +46,6 @@ class animate:
         self.build_mouth_sequence()
 
         self.duration = len(self.sequence.mouth_files) / self.fps
-        logger.info(f"Num Created: {len(self.sequence.mouth_files)}")
-        logger.info(f"Duration: {self.duration}")
 
         self.build_pose_sequence()
 
