@@ -1,25 +1,20 @@
 
-# PyToon
-[![Downloads](https://static.pepy.tech/badge/pytoon)](https://pepy.tech/project/pytoon)
+# PyAnimator
+PyAnimator is a Python based animation library for animating a character's mouth movements and bodily expressions to sync with an audio recording.
 
-## Overview 
-PyToon is a Python-based animation library for automatically animating characters and their mouth movements from just an audio file (.mp3 or .wav) of a person speaking English. This tool uses machine learning-based audio analysis techniques to automatically lip-sync animated character mouth movements to a given audio recording of someone talking. It is designed to easily overlay the generated animation over custom background videos in a "presentation" style video format. You can see an example of a PyToon generated animation in the YouTube link below:
-
-[Example Output Video](https://www.youtube.com/watch?v=Sg2OBBNwF-k&ab_channel=LKerbs)
-
-**Installation:** `pip install pytoon`
+**Installation:** `pip install pyanimator`
 
 ## Features
 - Automatically create cartoon animated lip-sync videos from just an audio file.
-- Use a provided transcript or let PyToon automatically generate the transcript from the audio with built-in text-to-speech.
+- Use a provided transcript or let PyAnimator automatically generate the transcript from the audio with built-in text-to-speech.
 - Programmatically generate animated videos.
 - Overlay animations over custom background videos or images.
-- OS Independent! PyToon works on Mac, Windows, and Linux.
+- OS Independent! PyAnimator works on Mac, Windows, and Linux.
 - Optimized for both CPU and GPU.
 - Fast Processing! A 60-second lip-sync animation clip takes ~39 seconds to generate.
 
 ## Getting Started 
-1. Install pytoon: `pip3 install pytoon`
+1. Install pyanimator: `pip3 install pyanimator`
 2. Install ffmpeg:
     - Mac: `brew install ffmpeg`
     - Linux: `sudo apt install ffmpeg`
@@ -31,7 +26,7 @@ PyToon is a Python-based animation library for automatically animating character
 If you have a transcript of the audio, you can directly pass it to the `animate` function.
 
 ```python
-from pytoon.animator import animate
+from pyanimator.animator import animate
 from moviepy import VideoFileClip # Note: this example uses MoviePy v2.0.0 
 
 # Read audio transcript to a string.
@@ -39,7 +34,7 @@ transcript_path = "./.temp/speech.txt"
 with open(transcript_path, "r") as file:
     transcript = file.read()
 
-# Create a PyToon animation 
+# Create a PyAnimator animation 
 animation = animate(
     audio_file="speech.mp3",  # Input audio
     transcript=transcript,   # Audio transcript
@@ -51,13 +46,13 @@ animation.export(path='video_with_transcript.mp4', background=background_video, 
 ```
 
 ### Example 2: Generating Animation from an MP3 File (without transcript)
-If you do not have a transcript for the audio, PyToon can automatically generate one using text-to-speech.
+If you do not have a transcript for the audio, PyAnimator can automatically generate one using text-to-speech.
 
 ```python
-from pytoon.animator import animate
+from pyanimator.animator import animate
 from moviepy import VideoFileClip
 
-# Create a PyToon animation without providing a transcript
+# Create a PyAnimator animation without providing a transcript
 animation = animate(
     audio_file="speech.mp3"  # Input audio (transcript will be auto-generated)
 )
@@ -68,11 +63,11 @@ animation.export(path='video_auto_transcript.mp4', background=background_video, 
 ```
 
 ## Contributing
-We welcome contributions to PyToon! To contribute, follow these simple steps:
+We welcome contributions to PyAnimator! To contribute, follow these simple steps:
 1. **Fork the Repository**: Click the "Fork" button on the GitHub repository to create a copy under your account.
 2. **Clone Your Fork**: Clone your forked repository to your local machine.
    ```bash
-   git clone https://github.com/your-username/pytoon.git
+   git clone https://github.com/your-username/pyanimator.git
    ```
 3. **Create a Branch**: Create a new branch for your feature or bug fix.
    ```bash

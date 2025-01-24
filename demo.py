@@ -1,4 +1,4 @@
-from pytoon.animator import animate
+from pyanimator.animator import animate
 from moviepy import ImageClip
 
 # Constants

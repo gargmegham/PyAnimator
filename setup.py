@@ -7,7 +7,7 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
 setup(
-    name="pytoon",
+    name="pyanimator",
     version="1.5.0",
     packages=find_packages(),
     install_requires=[
@@ -36,6 +36,6 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_data={"pytoon": ["assets/*", "assets/**/*", "assets/**/**/*"]},
+    package_data={"pyanimator": ["assets/*", "assets/**/*", "assets/**/**/*"]},
     include_package_data=True,
 )
