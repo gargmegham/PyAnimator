@@ -1,10 +1,8 @@
-import logging
-
 from moviepy import ImageClip
 
 from pyanimator.animator import animate
 
-logger = logging.getLogger(__name__)
+import time
 
 # Constants
 FPS = 48
@@ -13,16 +11,13 @@ AUDIO_PATH = "./.test/speech.mp3"  # Path to an audio file of speech
 BACKGROUND_IMAGE = "./.test/image.png"  # Path to an image for the video background
 OUTPUT_VIDEO = "./output_animation_with_transcript.mp4"  # Output for Example 1
 
-# Example 1: Providing a Transcript
-# ---------------------------------
-logger.info("Example 1: Using a provided transcript.")
+start_time = time.time()
 
 # Load the transcript
 with open(TEXT_PATH, "r") as file:
     transcript = file.read()
 
 # Generate the animation with the provided transcript
-logger.info("Generating animation with a provided transcript...")
 animation = animate(audio_file=AUDIO_PATH, transcript=transcript)
 
 # Create a background clip
@@ -31,6 +26,8 @@ background_clip = background_clip.with_fps(FPS).with_duration(animation.duration
 
 
 # Export the animation
-logger.info(f"Exporting animation to {OUTPUT_VIDEO}...")
 animation.export(path=OUTPUT_VIDEO, background=background_clip)
-logger.info(f"Animation exported successfully to {OUTPUT_VIDEO}!")
+
+end_time = time.time()
+
+print(f"Total time: {end_time - start_time} seconds")
